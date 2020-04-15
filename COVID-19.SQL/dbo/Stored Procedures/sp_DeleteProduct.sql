@@ -1,0 +1,23 @@
+﻿CREATE PROCEDURE [dbo].[sp_DeleteProduct]
+@ProductId INT
+AS
+BEGIN
+	BEGIN TRY
+
+		BEGIN TRANSACTION
+
+			DELETE FROM
+			[dbo].[Products] 
+			WHERE [Id] = @ProductId
+
+			SELECT 1
+
+		COMMIT TRANSACTION
+
+	END TRY
+	BEGIN CATCH
+		
+		ROLLBACK TRANSACTION
+
+	END CATCH
+END
