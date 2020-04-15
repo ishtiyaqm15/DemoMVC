@@ -8,10 +8,10 @@ namespace COVID_19.ProductsCatalog.Web.Models
     public class ProductViewModel
     {
         public int Id { get; set; }
-        public int Name { get; set; }
-        public int ShortDescription { get; set; }
-        public int LongDescription { get; set; }
+        public string Name { get; set; }
+        public string ShortDescription { get; set; }
+        public string LongDescription { get; set; }
         public byte[] Image { get; set; }
-        public byte[] Price { get; set; }
+        public double Price { get; set; }
     }
 }
