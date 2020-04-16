@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using COVID_19.ProductsCatalog.Web.Models;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 
@@ -11,14 +13,16 @@ namespace COVID_19.ProductsCatalog.Web.Controllers
     {
         private ApplicationUserManager _userManager;
         private ApplicationSignInManager _signInManager;
+        private ApplicationRoleManager _roleManager;
 
         public BaseController()
         {
         }
 
-        public BaseController(ApplicationUserManager userManager)
+        public BaseController(ApplicationUserManager userManager, ApplicationRoleManager roleManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public ApplicationSignInManager SignInManager
@@ -42,6 +46,34 @@ namespace COVID_19.ProductsCatalog.Web.Controllers
             private set
             {
                 _userManager = value;
+            }
+        }
+
+        public ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                return _roleManager ?? Request.GetOwinContext().GetUserManager<ApplicationRoleManager>();
+            }
+            private set
+            {
+                _roleManager = value;
+            }
+        }
+
+        public IList<string> CurrentRoles
+        {
+            get
+            {
+                return UserManager.GetRoles(User.Identity.GetUserId());
+            }
+        }
+
+        public ApplicationUser CurrentUser
+        {
+            get
+            {
+                return UserManager.FindById(User.Identity.GetUserId());
             }
         }
 
