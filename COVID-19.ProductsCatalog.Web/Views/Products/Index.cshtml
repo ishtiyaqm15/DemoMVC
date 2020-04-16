@@ -4,30 +4,29 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Index</h2>
+@Styles.Render("~/Content/products-css")
+<link href="~/Content/Products.css" rel="stylesheet" />
+<h2>Manage Products</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Add Product", "Create")
 </p>
-<table class="table">
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ShortDescription)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LongDescription)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("View", "View", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
-
-</table>
+<div class="div-product-catalog">
+    @foreach (var item in Model)
+    {
+        <div class="div-product-catalog row">
+            <div class="div-product-catalog row col1">
+                <img src="@item.ImageUrl">
+            </div>
+            <div class="div-product-catalog row col2">
+                <h4>@Html.DisplayFor(modelItem => item.Name)</h4>
+                <p>@Html.DisplayFor(modelItem => item.ShortDescription)</p>
+                <div class="div-product-catalog actions">
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("View", "View", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </div>
+            </div>
+        </div>                
+    }
+</div>

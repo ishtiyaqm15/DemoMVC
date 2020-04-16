@@ -1,4 +1,5 @@
 ﻿using COVID_19.ProductsCatalog.Web.Models;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Web.Mvc;
 
 namespace COVID_19.ProductsCatalog.Web.Controllers
 {
-    public class ProductsController : Controller
+    public class ProductsController : BaseController
     {
         // GET: Products
         public ActionResult Index()
@@ -32,17 +33,21 @@ namespace COVID_19.ProductsCatalog.Web.Controllers
 
         // POST: Products/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(ProductViewModel product)
         {
+            var productId = 0;
             try
             {
-                // TODO: Add insert logic here
+                using (var productsManager = new ProductsManager())
+                {
+                    productId = productsManager.Add(product, User.Identity.GetUserId());
+                }
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch(Exception ex)
             {
-                return View();
+                return View("Error");
             }
         }
 

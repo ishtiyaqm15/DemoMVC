@@ -1,7 +1,12 @@
-﻿using COVID_19.ProductsCatalog.Core.IRepositories;
+﻿using COVID_19.ProductsCatalog.Core.Common;
+using COVID_19.ProductsCatalog.Core.DomainModels;
+using COVID_19.ProductsCatalog.Core.IRepositories;
 using COVID_19.ProductsCatalog.Core.Repositories;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Web;
 
 namespace COVID_19.ProductsCatalog.Web.Models
 {
@@ -20,7 +25,7 @@ namespace COVID_19.ProductsCatalog.Web.Models
             var productList = _unitOfWork.ProductsRepository.GetAllProducts();
             foreach (var product in productList)
             {
-                viewModelProducts.Add(new ProductViewModel { Id = product.Id, Image = product.Image,
+                viewModelProducts.Add(new ProductViewModel { Id = product.Id, Image = new MemoryPostedFile(product.Image ?? new byte[0]),
                     LongDescription = product.LongDescription, ShortDescription = product.ShortDescription,
                     Name = product.Name, Price = product.Price
                 });
@@ -34,12 +39,21 @@ namespace COVID_19.ProductsCatalog.Web.Models
             return new ProductViewModel
                 {
                     Id = DomainModelProduct.Id,
-                    Image = DomainModelProduct.Image,
+                    Image = new MemoryPostedFile(DomainModelProduct.Image ?? new byte[0]),
                     LongDescription = DomainModelProduct.LongDescription,
                     ShortDescription = DomainModelProduct.ShortDescription,
                     Name = DomainModelProduct.Name,
                     Price = DomainModelProduct.Price
                 };
+        }
+
+        public int Add(ProductViewModel product, string userId)
+        {
+            var domainModelProduct = new Product() { Name= product.Name, ShortDescription=product.ShortDescription, LongDescription=product.LongDescription, Price=product.Price };
+            domainModelProduct.Image = MemoryPostedFile.GetFileBytes(product.Image.InputStream);
+            domainModelProduct.CreatedBy = userId;
+            var productId = _unitOfWork.ProductsRepository.AddProduct(domainModelProduct);
+            return productId;
         }
 
         public void Dispose()
