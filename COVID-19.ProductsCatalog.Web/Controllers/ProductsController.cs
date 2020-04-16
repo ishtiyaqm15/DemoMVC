@@ -1,9 +1,5 @@
 ﻿using COVID_19.ProductsCatalog.Web.Models;
 using Microsoft.AspNet.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace COVID_19.ProductsCatalog.Web.Controllers
@@ -14,17 +10,23 @@ namespace COVID_19.ProductsCatalog.Web.Controllers
         {
             using (var productsManager = new ProductsManager())
             {
-                var productsPaginatedModel = new ProductsPaginatedModel();
-                productsPaginatedModel.Products = productsManager.GetList();
-                productsPaginatedModel.CurrentPage = pageNum;
-                productsPaginatedModel.ProductPerPage = 10;
+                var productsPaginatedModel = new ProductsPaginatedModel
+                {
+                    Products = productsManager.GetList(),
+                    CurrentPage = pageNum,
+                    ProductPerPage = 10
+                };
                 return View(productsPaginatedModel);
             }
         }
         
         public ActionResult Details(int id)
         {
-            return View();
+            using (var productsManager = new ProductsManager())
+            {
+                var product = productsManager.Get(id);
+                return View(product);
+            }
         }
         
         public ActionResult Create()

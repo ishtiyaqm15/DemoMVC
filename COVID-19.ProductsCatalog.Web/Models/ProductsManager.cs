@@ -2,12 +2,9 @@
 using COVID_19.ProductsCatalog.Core.DomainModels;
 using COVID_19.ProductsCatalog.Core.IRepositories;
 using COVID_19.ProductsCatalog.Core.Repositories;
-using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Web;
 
 namespace COVID_19.ProductsCatalog.Web.Models
 {
@@ -64,8 +61,8 @@ namespace COVID_19.ProductsCatalog.Web.Models
 
         public bool Update(ProductViewModel product, string userId)
         {
-            var domainModelProduct = new Product() { Name = product.Name, ShortDescription = product.ShortDescription, LongDescription = product.LongDescription, Price = product.Price };
-            domainModelProduct.Image = MemoryPostedFile.GetFileBytes(product.Image.InputStream);
+            var domainModelProduct = new Product() { Id = product.Id, Name = product.Name, ShortDescription = product.ShortDescription, LongDescription = product.LongDescription, Price = product.Price };
+            domainModelProduct.Image = product.Image == null ? _unitOfWork.ProductsRepository.GetProduct(product.Id).Image: MemoryPostedFile.GetFileBytes(product.Image.InputStream);
             domainModelProduct.UpdatedBy = userId;
             return _unitOfWork.ProductsRepository.UpdateProduct(domainModelProduct);
         }

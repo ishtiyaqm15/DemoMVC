@@ -89,7 +89,7 @@ namespace COVID_19.ProductsCatalog.Core.Tests
                 LongDescription = "Oxygen supplies and misc",
                 Name = "New Mask",
                 Price = 8,
-                UpdateBy = tempProduct.CreatedBy,
+                UpdatedBy = tempProduct.CreatedBy,
                 IsActive= true
             };
 
@@ -101,7 +101,7 @@ namespace COVID_19.ProductsCatalog.Core.Tests
             Assert.AreNotEqual(product.ShortDescription, tempProduct.ShortDescription);
             Assert.AreNotEqual(product.Name, tempProduct.Name);
             Assert.AreNotEqual(product.Price, tempProduct.Price);
-            Assert.IsNotNull(product.UpdateBy);
+            Assert.IsNotNull(product.UpdatedBy);
         }
 
         [Test]
