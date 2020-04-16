@@ -1,0 +1,30 @@
+﻿@model COVID_19.ProductsCatalog.Web.Models.ProductViewModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Styles.Render("~/Content/products-css")
+@Scripts.Render("~/bundles/products")
+
+<h2>Details / @Model.Name</h2>
+<div class="div-product-details">
+    <div class="div-product-details-card">
+        <div class="div-product-details card col1">
+            <img src="@Model.ImageUrl">
+        </div>
+        <div class="div-product-details card col2">
+            <h4>@Model.Name</h4>
+            <p class="div-product-details-card-action">
+                @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+                <a style="cursor:pointer" onclick="DeleteProduct('@Url.Action("Delete", "Products", new { id = Model.Id })', '/Products')">Delete</a> |
+                @Html.ActionLink("Back to List", "Index")
+            </p>
+            <p class="div-product-details-card-shortDescription">@Model.ShortDescription</p>
+        </div>
+    </div>
+    <div class="div-product-details-bottom-description">
+        @Model.LongDescription
+</div>
+</div>
+

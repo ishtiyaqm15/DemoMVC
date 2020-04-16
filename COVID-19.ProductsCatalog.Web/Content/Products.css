@@ -1,0 +1,110 @@
+﻿.div-product-catalog {
+float: left;
+width: 100%;
+}
+
+.div-product-catalog .row {
+width: 100%;
+float: left;
+height: 200px;
+margin-left: 0px;
+}
+
+.div-product-catalog .row .col1 {
+width: 20%;
+float: left;
+padding: 10px;
+border: solid;
+border-width: 1px;
+}
+
+.div-product-catalog .row .col1 img {
+width: 100%;
+height: 180px;
+}
+
+.div-product-catalog .row .col2 {
+width: 75%;
+float: left;
+margin-left: 1%;
+padding: 10px;
+border: solid;
+border-width: 1px;
+}
+
+.div-product-catalog .row .col2 p{
+height:100px;
+}
+
+.div-product-catalog .actions {
+text-align:right;
+font-weight: bold;
+}
+
+.add {
+    text-align: right;
+    font-weight: bold;
+    padding-right: 65px;
+}
+
+.div-product-details {
+    float: left;
+    width: 100%;
+    margin-left: 0px;
+}
+
+.div-product-details-card {
+    width: 100%;
+    float: left;
+    height: 220px;
+    margin-left: 0px;
+}
+
+.div-product-details-card .col1 {
+    width: 20%;
+    float: left;
+    padding: 10px;
+    border: solid;
+    border-width: 1px;
+    height: 220px;
+}
+
+.div-product-details-card .col1 img {
+    width: 100%;
+    height: 180px;
+}
+
+.div-product-details-card .col2 {
+    width: 80%;
+    float: left;
+    padding: 10px;
+    border: solid;
+    border-width: 1px;
+    height:220px;
+}
+
+    .div-product-details-card .col2 h4 {
+        width: 70%;
+        float: left;
+    }
+
+    .div-product-details-card-action {
+        width: 30%;
+        float: left;
+        text-align: right;
+        font-weight:bold;
+    }
+
+    .div-product-details-card-shortDescription {
+        width: 100%;
+        float: left;
+    }
+
+.div-product-details-bottom-description {
+    float: left;
+    width: 100%;
+    min-height: 200px;
+    border: solid;
+    border-width: 1px;
+    padding: 10px;
+}
