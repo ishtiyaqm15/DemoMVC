@@ -10,89 +10,69 @@ namespace COVID_19.ProductsCatalog.Web.Controllers
 {
     public class ProductsController : BaseController
     {
-        // GET: Products
-        public ActionResult Index()
+        public ActionResult Index(int pageNum = 1)
         {
             using (var productsManager = new ProductsManager())
             {
-                return View(productsManager.GetList());
+                var productsPaginatedModel = new ProductsPaginatedModel();
+                productsPaginatedModel.Products = productsManager.GetList();
+                productsPaginatedModel.CurrentPage = pageNum;
+                productsPaginatedModel.ProductPerPage = 10;
+                return View(productsPaginatedModel);
             }
         }
-
-        // GET: Products/Details/5
+        
         public ActionResult Details(int id)
         {
             return View();
         }
-
-        // GET: Products/Create
+        
         public ActionResult Create()
         {
             return View();
         }
-
-        // POST: Products/Create
+        
         [HttpPost]
         public ActionResult Create(ProductViewModel product)
         {
             var productId = 0;
-            try
+            using (var productsManager = new ProductsManager())
             {
-                using (var productsManager = new ProductsManager())
-                {
-                    productId = productsManager.Add(product, User.Identity.GetUserId());
-                }
+                productId = productsManager.Add(product, User.Identity.GetUserId());
+            }
 
-                return RedirectToAction("Index");
-            }
-            catch(Exception ex)
-            {
-                return View("Error");
-            }
+            return RedirectToAction("Index");
         }
-
-        // GET: Products/Edit/5
+        
         public ActionResult Edit(int id)
         {
-            return View();
+            using (var productsManager = new ProductsManager())
+            {
+                var product = productsManager.Get(id);
+                return View(product);
+            }
         }
-
-        // POST: Products/Edit/5
+        
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(ProductViewModel product)
         {
-            try
+            using (var productsManager = new ProductsManager())
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+                productsManager.Update(product, User.Identity.GetUserId());
             }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Edit", new { id = product.Id});
         }
 
-        // GET: Products/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Products/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public string Delete(int id)
         {
-            try
+            var productName = "";
+            using (var productsManager = new ProductsManager())
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                productName = productsManager.Get(id).Name;
+                productsManager.Delete(id);
             }
-            catch
-            {
-                return View();
-            }
+            return string.Format("Product '{0}' successfully deleted!", productName);
         }
     }
 }

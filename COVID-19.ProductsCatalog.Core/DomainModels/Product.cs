@@ -17,7 +17,7 @@ namespace COVID_19.ProductsCatalog.Core.DomainModels
         public DateTime CreatedOn { get; set; }
         public string CreatedBy { get; set; }
         public DateTime UpdatedOn { get; set; }
-        public string UpdateBy { get; set; }
+        public string UpdatedBy { get; set; }
         public bool IsActive { get; set; }
     }
 }

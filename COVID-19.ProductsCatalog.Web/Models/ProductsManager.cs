@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Web;
 
 namespace COVID_19.ProductsCatalog.Web.Models
@@ -56,8 +57,38 @@ namespace COVID_19.ProductsCatalog.Web.Models
             return productId;
         }
 
+        public bool Delete(int productId)
+        {
+            return _unitOfWork.ProductsRepository.DeleteProduct(productId);
+        }
+
+        public bool Update(ProductViewModel product, string userId)
+        {
+            var domainModelProduct = new Product() { Name = product.Name, ShortDescription = product.ShortDescription, LongDescription = product.LongDescription, Price = product.Price };
+            domainModelProduct.Image = MemoryPostedFile.GetFileBytes(product.Image.InputStream);
+            domainModelProduct.UpdatedBy = userId;
+            return _unitOfWork.ProductsRepository.UpdateProduct(domainModelProduct);
+        }
+
         public void Dispose()
         {
+        }
+    }
+
+    public class ProductsPaginatedModel
+    {
+        public IList<ProductViewModel> Products { get; set; }
+        public int ProductPerPage { get; set; }
+        public int CurrentPage { get; set; }
+
+        public int PageCount()
+        {
+            return Convert.ToInt32(Math.Ceiling(Products.Count / (double)ProductPerPage));
+        }
+        public IList<ProductViewModel> PaginatedBlogs()
+        {
+            int start = (CurrentPage - 1) * ProductPerPage;
+            return Products.OrderBy(b => b.Id).Skip(start).Take(ProductPerPage).ToList();
         }
     }
 }

@@ -39,7 +39,7 @@ namespace COVID_19.ProductsCatalog.Core.Repositories
 
         public bool UpdateProduct(Product product)
         {
-            var param = new { @Name = product.Name, @productId = product.Id, @ShortDescription = product.ShortDescription, @LongDescription = product.LongDescription, @Image = product.Image, @Price = product.Price, @UpdatedBy = product.UpdateBy };
+            var param = new { @Name = product.Name, @productId = product.Id, @ShortDescription = product.ShortDescription, @LongDescription = product.LongDescription, @Image = product.Image, @Price = product.Price, @UpdatedBy = product.UpdatedBy };
             return base.ExecuteAndGetAsBoolean("[dbo].[sp_UpdateProduct]", param, CommandType.StoredProcedure);
         }
     }

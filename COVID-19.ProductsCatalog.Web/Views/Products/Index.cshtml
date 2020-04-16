@@ -1,18 +1,22 @@
-﻿@model IList<COVID_19.ProductsCatalog.Web.Models.ProductViewModel>
-
+﻿@model COVID_19.ProductsCatalog.Web.Models.ProductsPaginatedModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @Styles.Render("~/Content/products-css")
-<link href="~/Content/Products.css" rel="stylesheet" />
+@Scripts.Render("~/bundles/products")
 <h2>Manage Products</h2>
 
-<p>
+<p class="add">
     @Html.ActionLink("Add Product", "Create")
 </p>
+
+<div id="dvSuccessMsg" class="alert alert-success alert-dismissible" style="display:none">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Success!</strong> <label id="lblmessage"></label>
+</div>
 <div class="div-product-catalog">
-    @foreach (var item in Model)
+    @foreach (var item in Model.PaginatedBlogs())
     {
         <div class="div-product-catalog row">
             <div class="div-product-catalog row col1">
@@ -24,9 +28,19 @@
                 <div class="div-product-catalog actions">
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                     @Html.ActionLink("View", "View", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    <a style="cursor:pointer" onclick="DeleteProduct('@Url.Action("Delete", "Products", new { id = item.Id })')" >Delete</a>
                 </div>
             </div>
-        </div>                
+        </div>
     }
+
+    <ul class="pagination">
+        @for (int i = 1; i <= Model.PageCount(); i++)
+        {
+            <li class="@(i == Model.CurrentPage ? "page-item active" : "page-item")">
+                <a class="page-link" href="@Url.Action("Index", new { pageNum = i })">@i</a>
+            </li>
+        }
+    </ul>
+
 </div>
