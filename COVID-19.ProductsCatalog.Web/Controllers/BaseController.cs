@@ -1,10 +1,12 @@
-﻿using COVID_19.ProductsCatalog.Web.Models;
+﻿using COVID_19.ProductsCatalog.Core.Security;
+using COVID_19.ProductsCatalog.Web.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
+using System;
 
 namespace COVID_19.ProductsCatalog.Web.Controllers
 {
@@ -35,6 +37,11 @@ namespace COVID_19.ProductsCatalog.Web.Controllers
             {
                 _signInManager = value;
             }
+        }
+
+        internal ActionResult UnauthorizeContent()
+        {
+            throw new NotImplementedException();
         }
 
         public ApplicationUserManager UserManager
@@ -76,6 +83,28 @@ namespace COVID_19.ProductsCatalog.Web.Controllers
                 return UserManager.FindById(User.Identity.GetUserId());
             }
         }
+
+        public bool CanAdd
+        {
+            get
+            {
+                return CurrentRoles.Contains(Roles.Admin.GetStringValue());
+            }
+        }
+
+        public bool CanEdit
+        {
+            get
+            {
+                return CurrentRoles.Contains(Roles.Admin.GetStringValue()) || CurrentRoles.Contains(Roles.ContentContributors.GetStringValue());
+            }
+        }
+
+        public ActionResult AccessDenied()
+        {
+            return View("AccessDenied");
+        }
+
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {

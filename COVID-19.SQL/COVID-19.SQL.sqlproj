@@ -80,4 +80,7 @@
   <ItemGroup>
     <None Include="SqlSchemaCompare.Local.scmp" />
   </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="dbo\UsersData.sql" />
+  </ItemGroup>
 </Project>

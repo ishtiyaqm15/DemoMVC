@@ -16,8 +16,10 @@
         <div class="div-product-details card col2">
             <h4>@Model.Name</h4>
             <p class="div-product-details-card-action">
-                @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-                <a style="cursor:pointer" onclick="DeleteProduct('@Url.Action("Delete", "Products", new { id = Model.Id })', '/Products')">Delete</a> |
+                @if (Model.CanEdit) {
+                @Html.ActionLink("Edit", "Edit", new { id = Model.Id })                    <span> | </span>
+                <a style="cursor:pointer" onclick="DeleteProduct('@Url.Action("Delete", "Products", new { id = Model.Id })', '/Products')">Delete</a>                <span> | </span>
+                }
                 @Html.ActionLink("Back to List", "Index")
             </p>
             <p class="div-product-details-card-shortDescription">@Model.ShortDescription</p>

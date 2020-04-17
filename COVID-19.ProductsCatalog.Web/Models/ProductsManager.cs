@@ -72,7 +72,7 @@ namespace COVID_19.ProductsCatalog.Web.Models
         }
     }
 
-    public class ProductsPaginatedModel
+    public class ProductsPaginatedModel : Permissions
     {
         public IList<ProductViewModel> Products { get; set; }
         public int ProductPerPage { get; set; }

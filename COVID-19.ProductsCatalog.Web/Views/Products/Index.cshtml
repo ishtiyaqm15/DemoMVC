@@ -7,9 +7,12 @@
 @Scripts.Render("~/bundles/products")
 <h2>Manage Products</h2>
 
+@if (Model.CanAdd)
+{
 <p class="add">
     @Html.ActionLink("Add Product", "Create")
 </p>
+}
 
 <div id="dvSuccessMsg" class="alert alert-success alert-dismissible" style="display:none">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -26,9 +29,14 @@
                 <h4>@Html.DisplayFor(modelItem => item.Name)</h4>
                 <p>@Html.DisplayFor(modelItem => item.ShortDescription)</p>
                 <div class="div-product-catalog actions">
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    <a style="cursor:pointer" onclick="DeleteProduct('@Url.Action("Delete", "Products", new { id = item.Id })', '@Url.Action("Index", "Products")')" >Delete</a>
+                    @if (Model.CanEdit) {
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id })<span> | </span>
+                    }
+                    @Html.ActionLink("Details", "Details", new { id = item.Id })
+                    @if (Model.CanEdit)
+                    {
+                        <span> | </span><a style="cursor:pointer" onclick="DeleteProduct('@Url.Action("Delete", "Products", new { id = item.Id })', '@Url.Action("Index", "Products")')" >Delete</a>
+                    }
                 </div>
             </div>
         </div>

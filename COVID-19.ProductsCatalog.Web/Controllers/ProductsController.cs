@@ -1,4 +1,6 @@
-﻿using COVID_19.ProductsCatalog.Web.Models;
+﻿using COVID_19.ProductsCatalog.Core.Security;
+using COVID_19.ProductsCatalog.Web.App_Start;
+using COVID_19.ProductsCatalog.Web.Models;
 using Microsoft.AspNet.Identity;
 using System.Web.Mvc;
 
@@ -14,26 +16,32 @@ namespace COVID_19.ProductsCatalog.Web.Controllers
                 {
                     Products = productsManager.GetList(),
                     CurrentPage = pageNum,
-                    ProductPerPage = 10
+                    ProductPerPage = 10,
+                    CanEdit = CanEdit,
+                    CanAdd = CanAdd
                 };
                 return View(productsPaginatedModel);
             }
         }
-        
+
         public ActionResult Details(int id)
         {
             using (var productsManager = new ProductsManager())
             {
                 var product = productsManager.Get(id);
+                product.CanEdit = CanEdit;
+                product.CanAdd = CanAdd;
                 return View(product);
             }
         }
-        
+
+        [AuthorizeFilter(new string[] {"Admin"})]
         public ActionResult Create()
         {
             return View();
         }
-        
+
+        [AuthorizeFilter(new string[] { "Admin" })]
         [HttpPost]
         public ActionResult Create(ProductViewModel product)
         {
@@ -45,7 +53,8 @@ namespace COVID_19.ProductsCatalog.Web.Controllers
 
             return RedirectToAction("Index");
         }
-        
+
+        [AuthorizeFilter(new string[] { "Admin", "Content Contributors" })]
         public ActionResult Edit(int id)
         {
             using (var productsManager = new ProductsManager())
@@ -54,7 +63,8 @@ namespace COVID_19.ProductsCatalog.Web.Controllers
                 return View(product);
             }
         }
-        
+
+        [AuthorizeFilter(new string[] { "Admin", "Content Contributors" })]
         [HttpPost]
         public ActionResult Edit(ProductViewModel product)
         {
@@ -65,6 +75,7 @@ namespace COVID_19.ProductsCatalog.Web.Controllers
             return RedirectToAction("Edit", new { id = product.Id});
         }
 
+        [AuthorizeFilter(new string[] { "Admin", "Content Contributors" })]
         [HttpPost]
         public string Delete(int id)
         {

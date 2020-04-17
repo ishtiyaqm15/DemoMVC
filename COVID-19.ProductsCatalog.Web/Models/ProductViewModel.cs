@@ -7,7 +7,7 @@ using System.Web;
 
 namespace COVID_19.ProductsCatalog.Web.Models
 {
-    public class ProductViewModel
+    public class ProductViewModel : Permissions
     {
         public int Id { get; set; }
 
