@@ -33,6 +33,7 @@ namespace COVID_19.ProductsCatalog.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            returnUrl = returnUrl ?? "/";
             if (!ModelState.IsValid)
             {
                 return View(model);
